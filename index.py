@@ -119,7 +119,6 @@ def delete_pinecone_index(index_name='all'):
         print('Ok')
 
 
-# CHROMA NOT WORKING
 def create_embeddings_chroma(chunks, persist_directory='./chroma_db'):
     from langchain_community.vectorstores import Chroma
     from langchain_openai import OpenAIEmbeddings
@@ -162,14 +161,13 @@ vector_store = create_embeddings_chroma(chunks)
 
 # # Instantiate a ChatGPT LLM (temperature controls randomness)
 llm = ChatOpenAI(model_name='gpt-3.5-turbo', temperature=0)
-#
+
 # # Configure vector store to act as a retriever (finding similar items, returning top 5)
 retriever = vector_store.as_retriever(search_type='similarity', search_kwargs={'k': 5})
-#
-#
+
 # # Create a memory buffer to track the conversation
 memory = ConversationBufferMemory(memory_key='chat_history', return_messages=True)
-#
+
 
 # custom prompt
 system_template = r'''
@@ -209,10 +207,6 @@ def ask_question(q, chain):
     result = chain.invoke({'question': q})
     return result
 
-
-# question = 'How many pairs of questions and answers had the StackOverflow dataset?'
-# print(ask_question(question, crChain))
-# print(ask_question('Multiply that number by 10', crChain))
 
 print(qa_prompt)
 

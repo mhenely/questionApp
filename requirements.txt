@@ -10,3 +10,4 @@ pandas
 aiohttp
 PyYAML
 numpy
+streamlit
