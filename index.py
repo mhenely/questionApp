@@ -150,23 +150,23 @@ def load_embeddings_chroma(persist_directory='./chroma_db'):
     return vector_store  # Return the loaded vector store
 
 # Loading the pdf document into LangChain
-data = load_document('files/rag_powered_by_google_search.pdf')
-
-# Splitting the document into chunks
-chunks = chunk_data(data)
-
-# Creating a Chroma vector store using the provided text chunks and embedding model (default is text-embedding-3-small)
-vector_store = create_embeddings_chroma(chunks)
-
-
-# # Instantiate a ChatGPT LLM (temperature controls randomness)
-llm = ChatOpenAI(model_name='gpt-3.5-turbo', temperature=0)
-
-# # Configure vector store to act as a retriever (finding similar items, returning top 5)
-retriever = vector_store.as_retriever(search_type='similarity', search_kwargs={'k': 5})
-
-# # Create a memory buffer to track the conversation
-memory = ConversationBufferMemory(memory_key='chat_history', return_messages=True)
+# data = load_document('files/rag_powered_by_google_search.pdf')
+#
+# # Splitting the document into chunks
+# chunks = chunk_data(data)
+#
+# # Creating a Chroma vector store using the provided text chunks and embedding model (default is text-embedding-3-small)
+# vector_store = create_embeddings_chroma(chunks)
+#
+#
+# # # Instantiate a ChatGPT LLM (temperature controls randomness)
+# llm = ChatOpenAI(model_name='gpt-3.5-turbo', temperature=0)
+#
+# # # Configure vector store to act as a retriever (finding similar items, returning top 5)
+# retriever = vector_store.as_retriever(search_type='similarity', search_kwargs={'k': 5})
+#
+# # # Create a memory buffer to track the conversation
+# memory = ConversationBufferMemory(memory_key='chat_history', return_messages=True)
 
 
 # custom prompt
@@ -187,16 +187,16 @@ messages = [
     HumanMessagePromptTemplate.from_template(user_template)
 ]
 
-qa_prompt = ChatPromptTemplate.from_messages(messages)
-
-crChain = ConversationalRetrievalChain.from_llm(
-    llm=llm,  # Link the ChatGPT LLM
-    retriever=retriever,  # Link the vector store based retriever
-    memory=memory,  # Link the conversation memory
-    chain_type='stuff',  # Specify the chain type
-    combine_docs_chain_kwargs={'prompt':qa_prompt},
-    verbose=False  # Set to True to enable verbose logging for debugging
-)
+# qa_prompt = ChatPromptTemplate.from_messages(messages)
+#
+# crChain = ConversationalRetrievalChain.from_llm(
+#     llm=llm,  # Link the ChatGPT LLM
+#     retriever=retriever,  # Link the vector store based retriever
+#     memory=memory,  # Link the conversation memory
+#     chain_type='stuff',  # Specify the chain type
+#     combine_docs_chain_kwargs={'prompt':qa_prompt},
+#     verbose=False  # Set to True to enable verbose logging for debugging
+# )
 
 # 3. Ask(once)
 #     insert question and relevant chunks into message for gpt model
@@ -208,12 +208,12 @@ def ask_question(q, chain):
     return result
 
 
-print(qa_prompt)
-
-db = load_embeddings_chroma()
-question = 'How many pairs of questions and answers had the StackOverflow dataset?'
-result = ask_question(question, crChain)
-print(result)
+# print(qa_prompt)
+#
+# db = load_embeddings_chroma()
+# question = 'How many pairs of questions and answers had the StackOverflow dataset?'
+# result = ask_question(question, crChain)
+# print(result)
 
 def ask_and_get_answer(vector_store, q):
     from langchain.chains import RetrievalQA
@@ -258,9 +258,9 @@ def ask_from_wikipedia(question, topic):
     print(answer)
 
 
-# question = 'When ws the last time that the Chicago Cubs won the World Series?'
-# topic = 'Chicago Cubs'
-# print(ask_from_wikipedia(question, topic))
+question = 'When ws the last time that the Chicago Cubs won the World Series?'
+topic = 'Chicago Cubs'
+print(ask_from_wikipedia(question, topic))
 
 
 # 3. Ask until quit
